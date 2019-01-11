@@ -6,11 +6,15 @@ class Paddle {
     this.bottom = bottom;
   }
 
-  moveLeft() {
-    this.left -= 10;
+  moveLeft(limit) {
+    if (this.left != limit) {
+      this.left -= 10;
+    }
   }
 
-  moveRight() {
-    this.left += 10;
+  moveRight(limit) {
+    if (this.left != limit) {
+      this.left += 10;
+    }
   }
 }
