@@ -15,6 +15,12 @@ const drawScreen = function(mainScreen, screen) {
   mainScreen.style.height = addPixel(screen.height);
 };
 
+const drawBall = function(ballDiv, ball) {
+  ballDiv.style.borderRadius = addPixel(ball.radius);
+  ballDiv.style.bottom = addPixel(ball.bottom);
+  ballDiv.style.left = addPixel(ball.left);
+};
+
 const movePaddle = function(paddle, event) {
   let paddleDiv = document.getElementById("paddle_1");
   if (event.key == ARROW_RIGHT) paddle.moveRight(800);
@@ -38,16 +44,45 @@ const initializeScreen = function(document, screen) {
   return mainScreen;
 };
 
+const initializeBall = function(document, ball) {
+  let ballDiv = document.createElement("div");
+  ballDiv.id = "ball_1";
+  ballDiv.className = "ball";
+  drawBall(ballDiv, ball);
+  return ballDiv;
+};
+
+const drawBrick = function(brickDiv, brick) {
+  brickDiv.style.width = addPixel(brick.width);
+  brickDiv.style.height = addPixel(brick.height);
+  brickDiv.style.left = addPixel(brick.left);
+  brickDiv.style.top = addPixel(brick.top);
+};
+
+const initializeBrick = function(document, brick) {
+  let brickDiv = document.createElement("div");
+  brickDiv.id = "brick";
+  brickDiv.className = "brick";
+  drawBrick(brickDiv, brick);
+  return brickDiv;
+};
+
 const initialize = function(document) {
   let paddle = new Paddle(100, 20, 400, 5);
   let screen = new Screen(750, 900);
+  let ball = new Ball(50, 25, 425);
   let paddleDiv = initializePaddle(document, paddle);
+  let ballDiv = initializeBall(document, ball);
   let mainScreen = initializeScreen(document, screen);
   let gameBody = document.getElementById("gameBody");
   gameBody.appendChild(mainScreen);
   mainScreen.focus();
   mainScreen.onkeydown = movePaddle.bind(null, paddle);
+  let bricks = createWall(document);
+  mainScreen.appendChild(bricks);
   mainScreen.appendChild(paddleDiv);
+  mainScreen.appendChild(ballDiv);
+  moveBall(mainScreen, ballDiv, ball, paddle);
 };
 
 const startGame = function() {
