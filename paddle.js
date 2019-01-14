@@ -17,4 +17,19 @@ class Paddle {
       this.left += 10;
     }
   }
+
+  isBallOnPaddle(ball) {
+    return (
+      ball.bottom == this.bottom + 20 &&
+      (ball.left <= this.left + 100 && ball.left > this.left)
+    );
+  }
+
+  changeVelocityOf(ball) {
+    if (this.isBallOnPaddle(ball)) {
+      ball.positiveY();
+      ball.negateX();
+      ball.move();
+    }
+  }
 }

@@ -5,6 +5,36 @@ class Screen {
   }
 }
 
-const bounds = function() {
-  return { right: 0, left: 840, top: 690, bottom: 0 };
-};
+class VerticalWall {
+  constructor(left, right) {
+    this.left = left;
+    this.right = right;
+  }
+
+  changeVelocityOf(ball) {
+    if (ball.left > this.left) {
+      ball.negateX();
+    }
+
+    if (ball.left < this.right) {
+      ball.positiveX();
+    }
+  }
+}
+
+class HorizontalWall {
+  constructor(top, bottom) {
+    this.top = top;
+    this.bottom = bottom;
+  }
+
+  changeVelocityOf(ball) {
+    if (ball.bottom < this.bottom || ball.bottom > this.top) {
+      ball.negateY();
+    }
+
+    if (ball.bottom == this.bottom) {
+      location.reload();
+    }
+  }
+}
