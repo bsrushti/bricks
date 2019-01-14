@@ -13,11 +13,11 @@ class VerticalWall {
 
   changeVelocityOf(ball) {
     if (ball.left > this.left) {
-      ball.negateX();
+      ball.velocity.negateX();
     }
 
     if (ball.left < this.right) {
-      ball.positiveX();
+      ball.velocity.negateX();
     }
   }
 }
@@ -30,9 +30,8 @@ class HorizontalWall {
 
   changeVelocityOf(ball) {
     if (ball.bottom < this.bottom || ball.bottom > this.top) {
-      ball.negateY();
+      ball.velocity.negateY();
     }
-
     if (ball.bottom == this.bottom) {
       location.reload();
     }

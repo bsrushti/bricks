@@ -27,8 +27,8 @@ class Paddle {
 
   changeVelocityOf(ball) {
     if (this.isBallOnPaddle(ball)) {
-      ball.positiveY();
-      ball.negateX();
+      ball.velocity.negateY();
+      ball.velocity.negateX();
       ball.move();
     }
   }
