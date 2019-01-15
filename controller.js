@@ -2,6 +2,8 @@ const ARROW_RIGHT = "ArrowRight";
 const ARROW_LEFT = "ArrowLeft";
 const EMPTY = "";
 
+const getBody = document => document.getElementById("gameBody");
+
 const addPixel = count => count + "px";
 
 const drawPaddle = function(paddleDiv, paddle) {
@@ -94,23 +96,31 @@ const appendBrick = (document, screen) => {
   bricks.map(initializeBrick.bind(null, document, screen));
 };
 
-const initialize = function(document) {
+const createInstancesOfElements = function() {
   let paddle = new Paddle(100, 20, 400, 5);
   let screen = new Screen(750, 900);
   let velocity = new Velocity(1, 1);
   let ball = new Ball(50, 25, 425, velocity);
+  return { paddle, screen, ball };
+};
+
+const initialize = function(document) {
+  let { paddle, screen, ball } = createInstancesOfElements();
   let paddleDiv = initializePaddle(document, paddle);
   let ballDiv = initializeBall(document, ball);
   let mainScreen = initializeScreen(document, screen);
-  let gameBody = document.getElementById("gameBody");
-  gameBody.appendChild(mainScreen);
+  let gameBody = getBody(document);
+  appendElements(gameBody, mainScreen, paddleDiv, ballDiv);
   mainScreen.focus();
   mainScreen.onkeydown = movePaddle.bind(null, paddle);
-  createWall(document, mainScreen);
-  mainScreen.appendChild(paddleDiv);
-  mainScreen.appendChild(ballDiv);
-  appendBrick(document, mainScreen);
   game(mainScreen, ballDiv, ball, paddle);
+};
+
+const appendElements = function(gameBody, mainScreen, paddle, ball) {
+  gameBody.appendChild(mainScreen);
+  mainScreen.appendChild(paddle);
+  mainScreen.appendChild(ball);
+  appendBrick(document, mainScreen);
 };
 
 const startGame = function() {
