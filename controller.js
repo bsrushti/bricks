@@ -1,5 +1,6 @@
 const ARROW_RIGHT = "ArrowRight";
 const ARROW_LEFT = "ArrowLeft";
+const EMPTY = "";
 
 const addPixel = count => count + "px";
 
@@ -59,19 +60,18 @@ const drawBrick = function(brickDiv, brick) {
   brickDiv.style.top = addPixel(brick.top);
 };
 
-const initializeBrick = function(document, brick) {
+const initializeBrick = function(document, screen, brick) {
   let brickDiv = document.createElement("div");
-  brickDiv.id = "brick";
+  brickDiv.id = brick.id;
   brickDiv.className = "brick";
+  screen.appendChild(brickDiv);
   drawBrick(brickDiv, brick);
   return brickDiv;
 };
 
 const getWallDiv = document => document.createElement("div");
 
-const appendBrick = (screen, brick) => screen.appendChild(brick);
-
-const createWall = function(document, screen) {
+const createWall = function() {
   let top = 0;
   let height = 30;
   let width = 70;
@@ -79,15 +79,19 @@ const createWall = function(document, screen) {
   for (let row = 0; row <= 3; row++) {
     let left = 0;
     for (let column = 0; column <= 9; column++) {
-      let brick = new Brick(height, width, top, left);
-      wall.push(getBrick(top, left, false));
-      brick = initializeBrick(document, brick);
-      appendBrick(screen, brick);
+      let brickId = [row, column].join(EMPTY);
+      let brick = new Brick(brickId, height, width, top, left);
+      wall.push(brick);
       left += 90;
     }
     top += 55;
   }
   return wall;
+};
+
+const appendBrick = (document, screen) => {
+  let bricks = createWall(document);
+  bricks.map(initializeBrick.bind(null, document, screen));
 };
 
 const initialize = function(document) {
@@ -105,6 +109,7 @@ const initialize = function(document) {
   createWall(document, mainScreen);
   mainScreen.appendChild(paddleDiv);
   mainScreen.appendChild(ballDiv);
+  appendBrick(document, mainScreen);
   game(mainScreen, ballDiv, ball, paddle);
 };
 
